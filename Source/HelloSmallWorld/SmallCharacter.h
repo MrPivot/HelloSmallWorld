@@ -3,23 +3,26 @@
 #include "GameFramework/Character.h"
 #include "SmallCharacter.generated.h"
 
+class UDecalComponent;
+
 UCLASS()
 class HELLOSMALLWORLD_API ASmallCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-public:
-	// Sets default values for this character's properties
-	ASmallCharacter();
+    public:
+        ASmallCharacter();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+        void PostInit(int PlayerID);
+        void Activate();
+        void Deactivate();
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+        void MoveCursor(const FVector& Position, const FRotator& Rotation);
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+    private:
+        UPROPERTY(VisibleAnywhere)
+        UDecalComponent* DebugCursorDecal;
+
+        UMaterial* DecalMaterialP1;
+        UMaterial* DecalMaterialP2;
 };

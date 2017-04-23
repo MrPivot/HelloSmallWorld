@@ -16,9 +16,15 @@ class HELLOSMALLWORLD_API ASmallCameraController : public APlayerController
         ASmallCameraController();
 
         virtual void BeginPlay() override;
+        virtual void Tick(float DeltaTime) override;
 
-        FVector2D StartPositions[PLAYER_COUNT];
+        void NextTurn();
 
     private:
+        UPROPERTY(EditAnywhere)
+        FVector2D StartPositions[PLAYER_COUNT];
         ASmallCharacter* Players[PLAYER_COUNT];
+        
+        UPROPERTY(VisibleAnywhere)
+        int CurrentPlayer;
 };

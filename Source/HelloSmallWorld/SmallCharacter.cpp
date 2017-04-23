@@ -1,30 +1,63 @@
 #include "HelloSmallWorld.h"
 #include "SmallCharacter.h"
 
-// Sets default values
+#include "Runtime/Engine/Classes/Components/DecalComponent.h"
+
 ASmallCharacter::ASmallCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+    // Set the skeletal mesh of the player.
+    ConstructorHelpers::FObjectFinder<USkeletalMesh> skeletalMesh(TEXT("SkeletalMesh'/Game/Mannequin/Character/Mesh/SK_Mannequin.SK_Mannequin'"));
+    GetMesh()->SetSkeletalMesh(skeletalMesh.Object);
+    
+    // Limit movement to x and y direction.
+    GetCharacterMovement()->bConstrainToPlane = true;
+    // Rotate character to moving direction.
+    GetCharacterMovement()->bOrientRotationToMovement = true;
+
+    // Set up the cursor decal.
+    DebugCursorDecal = CreateDefaultSubobject<UDecalComponent>(TEXT("DebugCursorDecal"));
+    DebugCursorDecal->SetupAttachment(RootComponent);
+    DebugCursorDecal->DecalSize = FVector(16.0f, 32.0f, 32.0f);
+    DebugCursorDecal->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
+
+
+    ConstructorHelpers::FObjectFinder<UMaterial> decalMaterial1(TEXT("Material'/Game/Material/CursorDecalPlayer1.CursorDecalPlayer1'"));
+    DecalMaterialP1 = decalMaterial1.Object;
+    ConstructorHelpers::FObjectFinder<UMaterial> decalMaterial2(TEXT("Material'/Game/Material/CursorDecalPlayer2.CursorDecalPlayer2'"));
+    DecalMaterialP2 = decalMaterial2.Object;
 }
 
-// Called when the game starts or when spawned
-void ASmallCharacter::BeginPlay()
+
+void ASmallCharacter::PostInit(int PlayerID)
 {
-	Super::BeginPlay();
-	
+    switch(PlayerID)
+    {
+        case 0: {
+            DebugCursorDecal->SetDecalMaterial(DecalMaterialP1);
+        } break;
+
+        case 1: {
+            DebugCursorDecal->SetDecalMaterial(DecalMaterialP2);
+        } break;
+    }
+
+    DebugCursorDecal->bVisible = false;
 }
 
-// Called every frame
-void ASmallCharacter::Tick(float DeltaTime)
+void ASmallCharacter::Activate()
 {
-	Super::Tick(DeltaTime);
-
+    DebugCursorDecal->bVisible = true;
 }
 
-// Called to bind functionality to input
-void ASmallCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ASmallCharacter::Deactivate()
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+    DebugCursorDecal->bVisible = false;
 }
 
+void ASmallCharacter::MoveCursor(const FVector& Position, const FRotator& Rotation)
+{
+    DebugCursorDecal->SetWorldLocation(Position);
+    DebugCursorDecal->SetWorldRotation(Rotation);
+}

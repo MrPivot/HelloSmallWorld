@@ -1,7 +1,6 @@
 #include "HelloSmallWorld.h"
 #include "SmallCameraPawn.h"
 
-
 ASmallCameraPawn::ASmallCameraPawn() :
     MovementSpeed(1000.0f)
 {
@@ -9,7 +8,7 @@ ASmallCameraPawn::ASmallCameraPawn() :
 	PrimaryActorTick.bCanEverTick = true;
 
     RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
-
+    
     CameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraSpringArm"));
     CameraSpringArm->SetupAttachment(RootComponent);
     CameraSpringArm->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, 50.0f), FRotator(-60.0f, 0.0f, 0.0f));
@@ -27,10 +26,10 @@ void ASmallCameraPawn::Tick(float DeltaTime)
 
     if(!CameraMovementInput.IsZero())
     {
-        FVector NewLocation = GetActorLocation();
-        NewLocation += GetActorForwardVector() * CameraMovementInput.X * DeltaTime * MovementSpeed;
-        NewLocation += GetActorRightVector() * CameraMovementInput.Y * DeltaTime * MovementSpeed;
-        SetActorLocation(NewLocation);
+        FVector newLocation = GetActorLocation();
+        newLocation += GetActorForwardVector() * CameraMovementInput.X * DeltaTime * MovementSpeed;
+        newLocation += GetActorRightVector() * CameraMovementInput.Y * DeltaTime * MovementSpeed;
+        SetActorLocation(newLocation);
     }
 }
 
@@ -51,4 +50,3 @@ void ASmallCameraPawn::MoveRight(float AxisValue)
 {
     CameraMovementInput.Y = AxisValue;
 }
-
