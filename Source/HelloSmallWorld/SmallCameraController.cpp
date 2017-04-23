@@ -8,13 +8,15 @@ ASmallCameraController::ASmallCameraController() :
 {
     // Disable automatic swapping of used camera.
     bAutoManageActiveCameraTarget = false;
-
+    
     bShowMouseCursor   = true;
     DefaultMouseCursor = EMouseCursor::GrabHand;
 }
 
 void ASmallCameraController::BeginPlay()
 {
+    Super::BeginPlay();
+
     SetViewTarget(GetPawn());
 
     FActorSpawnParameters spawnInfo;
@@ -38,10 +40,27 @@ void ASmallCameraController::BeginPlay()
 
 void ASmallCameraController::Tick(float DeltaTime)
 {
+    Super::Tick(DeltaTime);
+
     FHitResult hitResult;
     GetHitResultUnderCursor(ECC_Visibility, true, hitResult);
     
     Players[CurrentPlayer]->MoveCursor(hitResult.Location, hitResult.ImpactNormal.Rotation());
+}
+
+void ASmallCameraController::SetupInputComponent()
+{
+    Super::SetupInputComponent();
+
+    InputComponent->BindAction("Select", EInputEvent::IE_Pressed, this, &ASmallCameraController::Select);
+}
+
+void ASmallCameraController::Select()
+{
+    FHitResult hitResult;
+    GetHitResultUnderCursor(ECC_Visibility, true, hitResult);
+
+    Players[CurrentPlayer]->SetActorLocation(hitResult.Location);
 }
 
 void ASmallCameraController::NextTurn()

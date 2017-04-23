@@ -18,12 +18,19 @@ class HELLOSMALLWORLD_API ASmallCameraPawn : public APawn
         void MoveForward(float AxisValue);
         void MoveRight(float AxisValue);
 
+        void ZoomIn();
+        void ZoomOut();
+
     private:
         UPROPERTY(EditAnywhere)
         USpringArmComponent* CameraSpringArm;
         UCameraComponent*    Camera;
         FVector2D            CameraMovementInput;
+        int                  CameraZoomInput;
 
         UPROPERTY(EditAnywhere)
         float MovementSpeed;
+
+        UPROPERTY(EditAnywhere)
+        float ZoomSpeed;
 };

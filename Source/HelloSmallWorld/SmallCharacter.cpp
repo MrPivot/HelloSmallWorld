@@ -22,7 +22,6 @@ ASmallCharacter::ASmallCharacter()
     DebugCursorDecal->DecalSize = FVector(16.0f, 32.0f, 32.0f);
     DebugCursorDecal->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
 
-
     ConstructorHelpers::FObjectFinder<UMaterial> decalMaterial1(TEXT("Material'/Game/Material/CursorDecalPlayer1.CursorDecalPlayer1'"));
     DecalMaterialP1 = decalMaterial1.Object;
     ConstructorHelpers::FObjectFinder<UMaterial> decalMaterial2(TEXT("Material'/Game/Material/CursorDecalPlayer2.CursorDecalPlayer2'"));

@@ -18,6 +18,10 @@ class HELLOSMALLWORLD_API ASmallCameraController : public APlayerController
         virtual void BeginPlay() override;
         virtual void Tick(float DeltaTime) override;
 
+        virtual void SetupInputComponent() override;
+
+        void Select();
+
         void NextTurn();
 
     private:

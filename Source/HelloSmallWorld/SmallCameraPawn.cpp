@@ -2,7 +2,9 @@
 #include "SmallCameraPawn.h"
 
 ASmallCameraPawn::ASmallCameraPawn() :
-    MovementSpeed(1000.0f)
+    MovementSpeed(1000.0f),
+    ZoomSpeed(100.0f),
+    CameraZoomInput(0)
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -31,11 +33,20 @@ void ASmallCameraPawn::Tick(float DeltaTime)
         newLocation += GetActorRightVector() * CameraMovementInput.Y * DeltaTime * MovementSpeed;
         SetActorLocation(newLocation);
     }
+
+    if(CameraZoomInput != 0)
+    {
+        CameraSpringArm->TargetArmLength += CameraZoomInput * ZoomSpeed;
+        CameraZoomInput = 0;
+    }
 }
 
 void ASmallCameraPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+    InputComponent->BindAction("ZoomIn", EInputEvent::IE_Pressed, this, &ASmallCameraPawn::ZoomIn);
+    InputComponent->BindAction("ZoomOut", EInputEvent::IE_Pressed, this, &ASmallCameraPawn::ZoomOut);
 
     InputComponent->BindAxis("MoveForward", this, &ASmallCameraPawn::MoveForward);
     InputComponent->BindAxis("MoveRight", this, &ASmallCameraPawn::MoveRight);
@@ -49,4 +60,14 @@ void ASmallCameraPawn::MoveForward(float AxisValue)
 void ASmallCameraPawn::MoveRight(float AxisValue)
 {
     CameraMovementInput.Y = AxisValue;
+}
+
+void ASmallCameraPawn::ZoomIn()
+{
+    CameraZoomInput = -1;
+}
+
+void ASmallCameraPawn::ZoomOut()
+{
+    CameraZoomInput = 1;
 }
