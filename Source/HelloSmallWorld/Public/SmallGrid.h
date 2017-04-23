@@ -29,6 +29,12 @@ protected:
 private:
 	//virtual void PostInitializeComponents() override;
 
+	UPROPERTY(EditAnywhere)
+	int Min;
+
+	UPROPERTY(EditAnywhere)
+	int Max;
+
 	// The width of the grid
 	UPROPERTY(EditAnywhere)
 	int width;
@@ -40,8 +46,13 @@ private:
 	UPROPERTY(EditAnywhere)
 	int tileSize;
 
+	TArray<int> SmallGrid;
+	USceneComponent* temp;
 	UPROPERTY(EditAnywhere)
-	UInstancedStaticMeshComponent *grid;
+	UInstancedStaticMeshComponent* EmptyTiles;
+
+	UPROPERTY(EditAnywhere)
+	UInstancedStaticMeshComponent* BlockTiles;
 
 	UStaticMeshComponent *mesh;
 };
