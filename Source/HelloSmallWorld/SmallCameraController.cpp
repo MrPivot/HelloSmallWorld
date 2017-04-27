@@ -2,6 +2,8 @@
 #include "SmallCameraController.h"
 
 #include "SmallCharacter.h"
+#include "SmallGrid.h"
+#include "Components/InstancedStaticMeshComponent.h"
 
 ASmallCameraController::ASmallCameraController() :
     CurrentPlayer(0)
@@ -43,7 +45,8 @@ void ASmallCameraController::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 
     FHitResult hitResult;
-    GetHitResultUnderCursor(ECC_Visibility, true, hitResult);
+	GetHitResultUnderCursor(ECC_Visibility, true, hitResult);
+	
     
     Players[CurrentPlayer]->MoveCursor(hitResult.Location, hitResult.ImpactNormal.Rotation());
 }
@@ -57,10 +60,19 @@ void ASmallCameraController::SetupInputComponent()
 
 void ASmallCameraController::Select()
 {
-    FHitResult hitResult;
-    GetHitResultUnderCursor(ECC_Visibility, true, hitResult);
+ //   FHitResult hitResult;
+ //   if (GetHitResultUnderCursor(ECC_Visibility, true, hitResult))
+	//{
+	//	AActor* actor = hitResult.GetActor();
+	//	UPrimitiveComponent* component = hitResult.GetComponent();
+	//	UInstancedStaticMeshComponent* temp = Cast<UInstancedStaticMeshComponent>(component);
+	//	ASmallGrid* grid = Cast<ASmallGrid>(actor);
+	//	TBitArray<FDefaultBitArrayAllocator> test = temp->SelectedInstances;
+	//	//for (int i = 0; i<test.)
+	//	grid->RotateBlock();
+	//}
 
-    Players[CurrentPlayer]->SetActorLocation(hitResult.Location);
+ //   Players[CurrentPlayer]->SetActorLocation(hitResult.Location);
 }
 
 void ASmallCameraController::NextTurn()
